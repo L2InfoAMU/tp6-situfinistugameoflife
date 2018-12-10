@@ -109,9 +109,7 @@ public class Grid implements Iterable<Cell> {
         return countAliveCells;
     }
 
-    // TODO: Écrire une version correcte de cette méthode.
     private CellState calculateNextState(int rowIndex, int columnIndex) {
-
         if((getCell(rowIndex,columnIndex).isAlive()
                 && countAliveNeighbours(rowIndex,columnIndex)>=2
                 && countAliveNeighbours(rowIndex,columnIndex)<=3)
@@ -124,15 +122,23 @@ public class Grid implements Iterable<Cell> {
 
 
 
-    // TODO: Écrire une version correcte de cette méthode.
     private CellState[][] calculateNextStates() {
         CellState[][] nextCellState = new CellState[getNumberOfRows()][getNumberOfColumns()];
+        for(int i = 0; i<getNumberOfRows();i++){
+            for(int j = 0; j<getNumberOfColumns();j++){
+                nextCellState[i][j] = calculateNextState(i,j);
+            }
+        }
         return nextCellState;
     }
 
     // TODO: Écrire une version correcte de cette méthode.
     private void updateStates(CellState[][] nextState) {
-
+        for(int i = 0;i<getNumberOfRows();i++){
+            for(int j = 0; j<getNumberOfColumns();j++){
+                this.cells[i][j].setState(nextState[i][j]);
+            }
+        }
     }
 
     /**
