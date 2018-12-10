@@ -156,7 +156,7 @@ public class Grid implements Iterable<Cell> {
      */
     // TODO: Écrire une version correcte de cette méthode.
     void updateToNextGeneration() {
-
+        updateStates(calculateNextStates());
     }
 
     /**
@@ -164,7 +164,11 @@ public class Grid implements Iterable<Cell> {
      */
     // TODO: Écrire une version correcte de cette méthode.
     void clear() {
-
+        for(int i = 0; i<getNumberOfRows();i++){
+            for(int j = 0; j<getNumberOfColumns();j++){
+                cells[i][j].setState(CellState.DEAD);
+            }
+        }
     }
 
     /**
@@ -173,8 +177,28 @@ public class Grid implements Iterable<Cell> {
      * @param random {@link Random} instance used to decide if each {@link Cell} is ALIVE or DEAD.
      * @throws NullPointerException if {@code random} is {@code null}.
      */
+
+
+
+
+
+
+
     // TODO: Écrire une version correcte de cette méthode.
     void randomGeneration(Random random) {
 
+        for(int i = 0; i<getNumberOfRows();i++) {
+            for (int j = 0; j < getNumberOfColumns(); j++) {
+
+                int aleatoire = random.nextInt()%2;
+
+                if(aleatoire==0) {
+                    cells[i][j].setState(CellState.DEAD);
+                }
+                else{
+                    cells[i][j].setState(CellState.ALIVE);
+                }
+            }
+        }
     }
 }
