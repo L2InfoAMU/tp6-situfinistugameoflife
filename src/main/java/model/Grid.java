@@ -108,19 +108,36 @@ public class Grid implements Iterable<Cell> {
         }
         return countAliveCells;
     }
+    private CellState getMajorityAliveState(int rowIndex, int columnIndex) {
+        int countRedMaj = 0;
+        List<Cell> list = getNeighbours(rowIndex, columnIndex);
+        for (Cell cellule : list) {
+            if (cellule.getState() == CellState.ALIVE_RED) {
+                countRedMaj++;
+            } else if (cellule.getState() == CellState.ALIVE_BLUE) {
+                countRedMaj--;
+            }
+        }
+        if (countRedMaj > 0) {
+            return CellState.ALIVE_RED;
+        } else {
+            return CellState.ALIVE_BLUE;
+        }
+    }
+
 
     private CellState calculateNextState(int rowIndex, int columnIndex) {
         if((getCell(rowIndex,columnIndex).isAlive()
                 && countAliveNeighbours(rowIndex,columnIndex)>=2
-                && countAliveNeighbours(rowIndex,columnIndex)<=3)
-                || (!(getCell(rowIndex,columnIndex).isAlive())
-                && countAliveNeighbours(rowIndex,columnIndex)==3)){
-            return CellState.ALIVE;
+                && countAliveNeighbours(rowIndex,columnIndex)<=3)){
+            return this.getCell(rowIndex,columnIndex).getState();
+
+        } else if(!(getCell(rowIndex,columnIndex).isAlive())
+                && countAliveNeighbours(rowIndex,columnIndex)==3){
+            return getMajorityAliveState(rowIndex, columnIndex);
         }
         else return CellState.DEAD;
     }
-
-
 
     private CellState[][] calculateNextStates() {
         CellState[][] nextCellState = new CellState[getNumberOfRows()][getNumberOfColumns()];
@@ -190,14 +207,16 @@ public class Grid implements Iterable<Cell> {
         for(int i = 0; i<getNumberOfRows();i++) {
             for (int j = 0; j < getNumberOfColumns(); j++) {
 
-                int aleatoire = random.nextInt()%2;
+                int aleatoire = random.nextInt()%3;
 
                 if(aleatoire==0) {
                     cells[i][j].setState(CellState.DEAD);
                 }
-                else{
-                    cells[i][j].setState(CellState.ALIVE);
+                else if(aleatoire==1){
+                    cells[i][j].setState(CellState.ALIVE_RED);
                 }
+                else if(aleatoire==2)
+                    cells[i][j].setState(CellState.ALIVE_BLUE);
             }
         }
     }
